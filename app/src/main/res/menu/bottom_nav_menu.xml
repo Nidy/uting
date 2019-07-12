@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@id/home_dest"
+            android:icon="@mipmap/ic_home"
+            android:title="@string/label_home" />
+    <item
+            android:id="@id/mine_dest"
+            android:icon="@mipmap/ic_mine"
+            android:title="@string/label_mine" />
+</menu>
