@@ -2,6 +2,5 @@ package com.uting.base
 
 interface BaseView<T> {
 
-    var presenter: T
-
+    var mPresenter: T
 }

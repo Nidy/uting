@@ -27,11 +27,11 @@ abstract class BaseFragment : Fragment() {
     @LayoutRes
     abstract fun getContentViewLayout() : Int
 
-    protected fun setUpView(view: View) {
+    open fun setUpView(view: View) {
 
     }
 
-    protected fun registerListeners() {
+    open fun registerListeners() {
 
     }
 }

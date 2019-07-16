@@ -1,4 +1,4 @@
-package com.uting.home
+package com.uting
 
 import android.content.res.Resources
 import androidx.appcompat.widget.Toolbar
@@ -10,7 +10,6 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.uting.R
 import com.uting.base.BaseActivity
 
 class MainActivity : BaseActivity() {

@@ -1,4 +1,4 @@
-package com.uting.home
+package com.uting.ui.home
 
 import com.uting.R
 import com.uting.base.BaseFragment
