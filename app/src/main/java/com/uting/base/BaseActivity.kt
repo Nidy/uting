@@ -22,6 +22,10 @@ abstract class BaseActivity : AppCompatActivity() {
     @LayoutRes
     abstract fun getContentView() : Int
 
+    open fun createPresenter() {
+
+    }
+
     protected open fun setUpView() {
 
     }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:background="@mipmap/ic_blackground"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            style="@style/Theme.AppCompat.Light.NoActionBar"
+            app:titleTextColor="@color/white"
+            app:title="This is Title"
+            app:layout_collapseMode="pin">
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <include
+        android:id="@+id/record_view"
+        layout="@layout/layout_record_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ll_play_control"
+        android:layout_below="@+id/toolbar"/>
+
+    <LinearLayout
+            android:id="@+id/ll_play_control"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+        <ImageView
+                android:id="@+id/iv_play"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:gravity="center_horizontal"
+                app:srcCompat="@drawable/ic_paly_to_pause"/>
+    </LinearLayout>
+
+</RelativeLayout>
