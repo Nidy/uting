@@ -1,8 +1,6 @@
 package com.uting.ui.home
 
-import android.graphics.drawable.Animatable
 import android.widget.ImageView
-import androidx.appcompat.widget.Toolbar
 import com.uting.R
 import com.uting.base.BaseActivity
 import com.uting.ui.home.contract.PlayContract
@@ -32,8 +30,8 @@ class PlayActivity : BaseActivity(), PlayContract.View {
     override fun setUpView() {
         super.setUpView()
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        mToolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(mToolbar)
         getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
         getSupportActionBar()?.setDisplayShowHomeEnabled(true)
 
@@ -41,15 +39,22 @@ class PlayActivity : BaseActivity(), PlayContract.View {
         mRecordView = findViewById(R.id.record_view)
 
         mChapterInfo = intent.getSerializableExtra("chapterInfo") as ChapterInfo
-//        mRecordView.setChapter(mChapterInfo)
+        mRecordView.setChapter(mChapterInfo)
+
+    }
+
+    override fun setToolbarTrans(): Boolean {
+        return true
     }
 
     override fun registerListeners() {
         super.registerListeners()
         mIvPlay.setOnClickListener {
-            val drawable = mIvPlay.drawable
-            if (drawable is Animatable) {
-                drawable.start()
+            mRecordView.playOrPause()
+            when (mRecordView.mMusicStatus) {
+                RecordView.MusicStatus.PLAY -> mIvPlay.setImageResource(R.drawable.ic_pause)
+                RecordView.MusicStatus.STOP -> mIvPlay.setImageResource(R.drawable.ic_pause)
+                RecordView.MusicStatus.PAUSE -> mIvPlay.setImageResource(R.drawable.ic_play)
             }
         }
     }

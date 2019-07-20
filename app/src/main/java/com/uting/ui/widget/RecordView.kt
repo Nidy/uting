@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import com.uting.R
+import com.uting.service.PlayController
 import com.uting.ui.home.entity.ChapterInfo
 import com.uting.util.DisplayUtils
 
@@ -79,7 +80,6 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
         initNeedle()
         initObjectAnimator()
         initDiscPicLayout()
-        mDiscAnimators = getDiscObjectAnimator()
     }
 
     private fun initDiscBackground() {
@@ -120,7 +120,7 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
         mNeedleAnimator.interpolator = AccelerateInterpolator()
         mNeedleAnimator.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(p0: Animator?) {
-
+                //do nothing
             }
 
             override fun onAnimationEnd(p0: Animator?) {
@@ -142,7 +142,7 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
             }
 
             override fun onAnimationCancel(p0: Animator?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                //do nothing
             }
 
             override fun onAnimationStart(p0: Animator?) {
@@ -307,6 +307,7 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
 
     fun setChapter(chapterInfo: ChapterInfo) {
         this.mChapterInfo = chapterInfo
+        PlayController.get().setChapter(chapterInfo = mChapterInfo)
         mDiscAnimators = getDiscObjectAnimator()
     }
 
@@ -323,12 +324,15 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
     }
 
     private fun play() {
+        mMusicStatus = MusicStatus.PLAY
         playAnimator()
+        PlayController.get().play()
     }
 
     private fun pause() {
         mMusicStatus = MusicStatus.PAUSE
         pauseAnimator()
+        PlayController.get().pause()
     }
 
     fun stop() {

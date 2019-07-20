@@ -1,6 +1,5 @@
 package com.uting
 
-import android.content.res.Resources
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -22,8 +21,8 @@ class MainActivity : BaseActivity() {
 
     override fun setUpView() {
         super.setUpView()
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        mToolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(mToolbar)
 
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment? ?: return
@@ -33,14 +32,6 @@ class MainActivity : BaseActivity() {
         setupActionBarWithNavController(navController, mAppBarConfiguration)
 
         setupBottomNavMenu(navController)
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            val dest: String = try {
-                resources.getResourceName(destination.id)
-            } catch (e: Resources.NotFoundException) {
-                Integer.toString(destination.id)
-            }
-        }
     }
 
     private fun setupBottomNavMenu(navController: NavController) {

@@ -8,4 +8,5 @@
     <color name="black">#000000</color>
     <color name="textColorPrimary">#2B2D42</color>
     <color name="textColorSecondary">#8D99AE</color>
+    <color name="textColor_999">#999</color>
 </resources>
