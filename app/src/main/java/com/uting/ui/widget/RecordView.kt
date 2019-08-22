@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import com.uting.R
+import com.uting.aidl.IPlayControl
 import com.uting.service.PlayController
 import com.uting.ui.home.entity.ChapterInfo
 import com.uting.util.DisplayUtils
@@ -41,12 +42,13 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
     private var mNeedleAnimatorStatus = NeedleAnimatorStatus.IN_FAR_END
     private lateinit var mDiscAnimators: ObjectAnimator
     private val mIPlayInfo: IPlayInfo? = null
-    private lateinit var mChapterInfo: ChapterInfo
+    private var mChapterInfo: ChapterInfo? = null
+    private var mPlayControl: IPlayControl? = null
 
 
     init {
-        mScreenWidth = DisplayUtils.getScreenWidth(context);
-        mScreenHeight = DisplayUtils.getScreenHeight(context);
+        mScreenWidth = DisplayUtils.getScreenWidth(context)
+        mScreenHeight = DisplayUtils.getScreenHeight(context)
     }
 
     enum class NeedleAnimatorStatus {
@@ -83,25 +85,25 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
     }
 
     private fun initDiscBackground() {
-        val mDiscBackground = findViewById<ImageView>(com.uting.R.id.ivDiscBlackgound);
-        mDiscBackground.setImageDrawable(getDiscBackgroundDrawable());
+        val mDiscBackground = findViewById<ImageView>(com.uting.R.id.ivDiscBlackgound)
+        mDiscBackground.setImageDrawable(getDiscBackgroundDrawable())
 
         val marginTop = DisplayUtils.SCALE_DISC_MARGIN_TOP * mScreenHeight
-        val layoutParams = mDiscBackground.getLayoutParams() as LayoutParams
+        val layoutParams = mDiscBackground.layoutParams as LayoutParams
         layoutParams.setMargins(0, marginTop.toInt(), 0, 0)
 
         mDiscBackground.layoutParams = layoutParams
     }
 
     private fun initNeedle() {
-        mIvNeedle = findViewById(com.uting.R.id.iv_needle)
+        mIvNeedle = findViewById(R.id.iv_needle)
         val needleWidth = DisplayUtils.SCALE_NEEDLE_WIDTH * mScreenWidth
         val needleHeight = DisplayUtils.SCALE_NEEDLE_HEIGHT * mScreenHeight
 
         val marginTop = DisplayUtils.SCALE_NEEDLE_MARGIN_TOP * mScreenHeight * -1
         val marginLeft = DisplayUtils.SCALE_NEEDLE_MARGIN_LEFT * mScreenWidth
 
-        val originBitmap = BitmapFactory.decodeResource(resources, com.uting.R.mipmap.ic_needle)
+        val originBitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_needle)
         val bitmap = Bitmap.createScaledBitmap(originBitmap, needleWidth.toInt(), needleHeight.toInt(), false)
 
         val lp = mIvNeedle.layoutParams as LayoutParams
@@ -151,9 +153,9 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
                  * 即可得出动画进行时NeedleAnimatorStatus的状态
                  * */
                 if (mNeedleAnimatorStatus == NeedleAnimatorStatus.IN_FAR_END) {
-                    mNeedleAnimatorStatus = NeedleAnimatorStatus.TO_NEAR_END;
+                    mNeedleAnimatorStatus = NeedleAnimatorStatus.TO_NEAR_END
                 } else if (mNeedleAnimatorStatus == NeedleAnimatorStatus.IN_NEAR_END) {
-                    mNeedleAnimatorStatus = NeedleAnimatorStatus.TO_FAR_END;
+                    mNeedleAnimatorStatus = NeedleAnimatorStatus.TO_FAR_END
                 }
             }
 
@@ -163,16 +165,16 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
     private fun getDiscBackgroundDrawable(): Drawable {
         val discSize = mScreenWidth * DisplayUtils.SCALE_DISC_SIZE
         val bitmapDisc = Bitmap.createScaledBitmap(
-            BitmapFactory.decodeResource(resources, com.uting.R.mipmap.ic_disc_blackground),
+            BitmapFactory.decodeResource(resources, R.mipmap.ic_disc_blackground),
             discSize.toInt(), discSize.toInt(), false)
         return RoundedBitmapDrawableFactory.create(resources, bitmapDisc)
     }
 
     private fun getDiscObjectAnimator(): ObjectAnimator {
         val objectAnimator = ObjectAnimator.ofFloat<View>(mIvDisc, View.ROTATION, 0f, 360f)
-        objectAnimator.setRepeatCount(ValueAnimator.INFINITE)
-        objectAnimator.setDuration((20 * 1000).toLong())
-        objectAnimator.setInterpolator(LinearInterpolator())
+        objectAnimator.repeatCount = ValueAnimator.INFINITE
+        objectAnimator.duration = (20 * 1000).toLong()
+        objectAnimator.interpolator = LinearInterpolator()
 
         return objectAnimator
     }
@@ -181,10 +183,10 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
         val drawable = getDiscDrawable(R.drawable.ic_music2)
         mIvDisc = findViewById(R.id.iv_disc)
         mIvDisc.setImageDrawable(drawable)
-        val layoutParams = mIvDisc.getLayoutParams() as LayoutParams
+        val layoutParams = mIvDisc.layoutParams as LayoutParams
         val marginTop = (DisplayUtils.SCALE_DISC_MARGIN_TOP * mScreenHeight).toInt()
         layoutParams.setMargins(0, marginTop, 0, 0)
-        mIvDisc.setLayoutParams(layoutParams)
+        mIvDisc.layoutParams = layoutParams
     }
 
     /**
@@ -197,7 +199,7 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
 
         val bitmapDisc = Bitmap.createScaledBitmap(
             BitmapFactory.decodeResource(
-                resources, com.uting.R.mipmap.ic_disc
+                resources, R.mipmap.ic_disc
             ), discSize, discSize, false
         )
         val bitmapMusicPic = getMusicPicBitmap(musicPicSize, musicPicRes)
@@ -222,6 +224,10 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
         )
 
         return layerDrawable
+    }
+
+    fun initData(control: IPlayControl) {
+        this.mPlayControl = control
     }
 
     private fun getMusicPicBitmap(musicPicSize: Int, musicPicRes: Int): Bitmap {
@@ -265,7 +271,7 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
         /*播放时暂停动画*/
         if (mNeedleAnimatorStatus === NeedleAnimatorStatus.IN_NEAR_END) {
 
-            pauseDiscAnimatior()
+            pauseDiscAnimators()
         } else if (mNeedleAnimatorStatus === NeedleAnimatorStatus.TO_NEAR_END) {
             mNeedleAnimator.reverse()
             /**
@@ -286,7 +292,7 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
 
     /*播放唱盘动画*/
     private fun playDiscAnimator() {
-        if (mDiscAnimators.isPaused()) {
+        if (mDiscAnimators.isPaused) {
             mDiscAnimators.resume()
         } else {
             mDiscAnimators.start()
@@ -300,39 +306,33 @@ class RecordView @JvmOverloads constructor(context: Context, attributes: Attribu
     }
 
     /*暂停唱盘动画*/
-    private fun pauseDiscAnimatior() {
+    private fun pauseDiscAnimators() {
         mDiscAnimators.pause()
         mNeedleAnimator.reverse()
     }
 
     fun setChapter(chapterInfo: ChapterInfo) {
         this.mChapterInfo = chapterInfo
-        PlayController.get().setChapter(chapterInfo = mChapterInfo)
+        PlayController.get().setChapter(chapterInfo = mChapterInfo!!)
         mDiscAnimators = getDiscObjectAnimator()
     }
 
     fun notifyMusicInfoChanged(position: Int) {
-        if (mIPlayInfo != null) {
-            mIPlayInfo.onMusicInfoChanged(mChapterInfo.title, mChapterInfo.nikename)
-        }
+        mIPlayInfo?.onMusicInfoChanged(mChapterInfo!!.title, mChapterInfo!!.nikename)
     }
 
-    fun notifyMusicStatusChanged(musicChangedStatus: MusicChangedStatus) {
-        if (mIPlayInfo != null) {
-            mIPlayInfo.onMusicChanged(musicChangedStatus)
-        }
+    private fun notifyMusicStatusChanged(musicChangedStatus: MusicChangedStatus) {
+        mIPlayInfo?.onMusicChanged(musicChangedStatus)
     }
 
-    private fun play() {
+    fun play() {
         mMusicStatus = MusicStatus.PLAY
         playAnimator()
-        PlayController.get().play()
     }
 
-    private fun pause() {
-        mMusicStatus = MusicStatus.PAUSE
+    fun pause() {
+        mMusicStatus = RecordView.MusicStatus.PAUSE
         pauseAnimator()
-        PlayController.get().pause()
     }
 
     fun stop() {

@@ -15,7 +15,7 @@
     </style>
 
     <style name="TextContentPrimary">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="android:lineSpacingMultiplier">1.3</item>
     </style>
@@ -24,6 +24,17 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/textColorSecondary</item>
         <item name="android:lineSpacingMultiplier">1.1</item>
+    </style>
+
+    <style name="TransparentBottomSheetStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/SheetStyle</item>
+    </style>
+
+    <style name="SheetStyle" parent="android:Widget">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="behavior_peekHeight">auto</item>
+        <item name="behavior_hideable">true</item>
+        <item name="behavior_skipCollapsed">false</item>
     </style>
 
 </resources>

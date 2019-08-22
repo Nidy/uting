@@ -67,13 +67,8 @@ abstract class BaseAdapter<T>(
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 shouldLoadMore(recyclerView, !loadingMore && newState == RecyclerView.SCROLL_STATE_IDLE)
-
             }
 
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                shouldLoadMore(recyclerView, !loadingMore, dx, dy)
-            }
         })
     }
 
@@ -137,7 +132,7 @@ abstract class BaseAdapter<T>(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is BaseViewHolder -> {
-                render(holder.itemView, dataList[position])
+                render(holder.itemView, dataList[position], position)
             }
             is LoadingHolder -> {
                 holder.status = loadingStatus
@@ -156,6 +151,6 @@ abstract class BaseAdapter<T>(
         return dataList.size + footerSize()
     }
 
-    abstract fun render(itemView: View, data: T)
+    abstract fun render(itemView: View, data: T, position: Int)
 
 }

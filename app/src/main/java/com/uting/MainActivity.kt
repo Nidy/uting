@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.uting.base.BaseActivity
+import com.uting.manager.PlayServiceManager
 
 class MainActivity : BaseActivity() {
 
@@ -32,6 +33,8 @@ class MainActivity : BaseActivity() {
         setupActionBarWithNavController(navController, mAppBarConfiguration)
 
         setupBottomNavMenu(navController)
+
+        PlayServiceManager.startPlayService(this)
     }
 
     private fun setupBottomNavMenu(navController: NavController) {

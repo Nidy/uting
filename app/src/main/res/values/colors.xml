@@ -9,4 +9,5 @@
     <color name="textColorPrimary">#2B2D42</color>
     <color name="textColorSecondary">#8D99AE</color>
     <color name="textColor_999">#999</color>
+    <color name="transparent">#00ffffff</color>
 </resources>

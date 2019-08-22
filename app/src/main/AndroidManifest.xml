@@ -25,6 +25,18 @@
         </activity>
 
         <activity android:name=".ui.home.PlayActivity"/>
+
+        <service android:name=".service.PlayService"
+                 android:enabled="true"
+                 android:exported="true"
+                 android:permission="com.uting.permission.ACCESS_PLAY_SERVICE"
+                 android:process=":playService">
+            <intent-filter>
+                <action android:name="com.uting.action.PLAY_SERVICE" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
